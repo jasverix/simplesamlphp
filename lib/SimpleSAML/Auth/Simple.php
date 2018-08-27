@@ -31,14 +31,18 @@ class Simple
     /**
      * Create an instance with the specified authsource.
      *
-     * @param string $authSource The id of the authentication source.
+     * @param string|array $authSource The id of the authentication source.
      */
     public function __construct($authSource)
     {
-        assert(is_string($authSource));
-
-        $this->authSource = $authSource;
-        $this->app_config = Configuration::getInstance()->getConfigItem('application', null);
+        if (is_string($authSource)) {
+            $this->authSource = $authSource;
+            $this->app_config = Configuration::getInstance()->getConfigItem('application', null);
+        }
+        if (is_array($authSource)) {
+            $this->authSource = 'given';
+            $this->app_config = Configuration::loadFromArray($authSource);
+        }
     }
 
 
